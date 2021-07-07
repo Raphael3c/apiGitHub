@@ -44,8 +44,14 @@
   width: 100%;
 }
 
+.content-profile .content-numbers p{
+  margin-bottom: 10px;
+}
+
+
 .content-profile .content-bio{
   text-align: justify;
+  width: 100%;
 }
 
 .content-profile .title{
@@ -66,6 +72,22 @@
 
 .margin-right{
   margin-right: 5px;
+}
+
+.footer span{
+  margin-bottom: 10px;
+}
+
+.footer a{
+  color: white;
+}
+
+.footer a:hover{
+  color: #FB5607;
+}
+
+.footer a:active{
+  color: red;
 }
 
 #center{

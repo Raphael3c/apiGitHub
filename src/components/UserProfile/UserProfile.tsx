@@ -1,6 +1,12 @@
-import {UserProfileProps} from '../../_config/interface'
+import { useEffect, useState } from 'react';
+
+import {useParams} from 'react-router-dom'
+
+import { UserProfileProps } from '../../_config/interface'
 
 import { CircularProgress } from '@material-ui/core';
+
+import { api } from '../../_config/api'
 
 import GitHubIcon from '@material-ui/icons/GitHub';
 import QueryBuilderOutlinedIcon from '@material-ui/icons/QueryBuilderOutlined';
@@ -12,12 +18,41 @@ import MenuBookOutlinedIcon from '@material-ui/icons/MenuBookOutlined';
 import './UserProfile.css'
 import { BackButton } from '../BackButton';
 
-function UserProfile(props: UserProfileProps) {
+interface ParamsUrl{
+  login: string;
+}
+
+function UserProfile() {
+
+  const { login } = useParams() as ParamsUrl;
+
+  const [props, setProps] = useState({} as UserProfileProps)
+  const [hasContent, setHasContent] = useState(false)
+  
+  useEffect(() => {
+    async function fetchAPI(){
+      const result = await api.get(`/${login}`)
+      setProps(result.data as UserProfileProps)
+      setHasContent(true)
+    }
+
+    fetchAPI()
+  }, [login])
+  
+  function dateCreated(){
+    let [date, ] = props.created_at.split("T")
+
+    date = date.replaceAll("-", "/")
+
+    return date;
+  }
+
   return (
     <>
     <BackButton />
     <div className="content-main">
-      {props.hasContent ? (<div>
+      {hasContent ? (
+      <>
         <div className="image-profile">
           <img src={props.avatar_url} alt="Foto do perfil procurado" width="250"/>
           <span>{props.login}</span>
@@ -38,9 +73,11 @@ function UserProfile(props: UserProfileProps) {
 
         <div className="footer">
           <span><GitHubIcon className="margin-right"/> <a target="_blank" rel="noreferrer" href={props.html_url}>Acesse: {`github.com/${props.login}`}</a></span>
-          <p><QueryBuilderOutlinedIcon className="margin-right"/> Criado em: {props.created_at}</p>
+          <p><QueryBuilderOutlinedIcon className="margin-right"/> Criado em: {dateCreated()}</p>
         </div>
-      </div>) : (<div id="center"> <CircularProgress color="secondary" /> </div>)}
+      </>) 
+      : 
+      (<div id="center"> <CircularProgress color="secondary" /> </div>)}
     </div>
     </>
   )
