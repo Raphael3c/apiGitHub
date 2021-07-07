@@ -10,9 +10,12 @@ import StorageOutlinedIcon from '@material-ui/icons/StorageOutlined';
 import MenuBookOutlinedIcon from '@material-ui/icons/MenuBookOutlined';
 
 import './UserProfile.css'
+import { BackButton } from '../BackButton';
 
 function UserProfile(props: UserProfileProps) {
   return (
+    <>
+    <BackButton />
     <div className="content-main">
       {props.hasContent ? (<div>
         <div className="image-profile">
@@ -39,6 +42,7 @@ function UserProfile(props: UserProfileProps) {
         </div>
       </div>) : (<div id="center"> <CircularProgress color="secondary" /> </div>)}
     </div>
+    </>
   )
 }
 
